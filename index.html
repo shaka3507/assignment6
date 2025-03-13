@@ -3,14 +3,14 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lato:wght@100;400&display=swap" rel="stylesheet">
 	<style type="text/css">
 		body {
 			text-align: center;
-			font-family: "Permanent Marker", arial;
+			font-family: "DM Serif Display", georgia, serif;
 		}
-		.guess-row {
 
+		.guess-row {
 			input {
 				border: none;
 				width: 250px;
@@ -20,7 +20,7 @@
 				margin-top: 10px;
 				text-align: center;
 				text-transform: uppercase;
-				font-family: "Permanent Marker", arial;
+				font-family: "DM Serif Display", georgia, serif;
 			}
 
 			input:focus {
@@ -32,7 +32,7 @@
 				margin-top: 10px;
 				text-align: center;
 				text-transform: uppercase;
-				font-family: "Permanent Marker", arial;
+				font-family: "DM Serif Display", georgia, serif;
 			}
 
 			button {
@@ -81,18 +81,21 @@
 			display: flex;
 			justify-content: center;  			
 			flex-wrap: wrap;
-
+			width: 500px;
+			margin: 0 auto;
 			div {
 				margin: 0px 2px;
 				background-color: white;
 				padding: 3px;
 				width: 24px;
+				height: 24px;
 				border: 1px solid grey;
 				color: black;
 				margin-bottom: 8px;
 			}
 
 		}
+
 		#debug {
 			all: unset;
 			border: 2px solid black;
@@ -100,6 +103,21 @@
 			padding: 4px;
 			color: darkcyan;
 		}
+
+
+		#yellow {
+			color: gold;
+			font-weight: 700;
+		}
+		#grey {
+			color: grey;
+			font-weight: 700;
+		}
+		#green {
+			color: green;
+			font-weight: 700;
+		}
+
 		#attempt {
 			font-size: 24px;
 		}
@@ -107,16 +125,77 @@
 		.debug-container {
 			display: flex;
 			width: 100%;
-			justify-content: right;
+			margin: 8px;
+			align-items: vertical;
+			position: absolute;
+			left: 0;
+			span {
+				padding-left: 20px;
+				text-decoration: underline;
+			}
+		}
+
+		footer {
+			position: absolute;
+			bottom: 0;
+			border-top: 2px solid black;
+			width: 100%;
+		}
+
+
+		.container {
+			margin: 200px 0px;
+		}
+
+		#guess-num {
+			border: 2px solid red;
+			padding: 4px;
+		}
+
+
+		@media only screen and (max-width: 600px) {
+			.alphabet {
+				margin-top: 20px;
+				display: flex;
+				justify-content: center;  			
+				flex-wrap: wrap;
+				width: 300px;
+				margin: 0 auto;
+				div {
+					margin: 0px 2px;
+					background-color: white;
+					padding: 3px;
+					width: 48px;
+					height: 48px;
+					border: 1px solid grey;
+					color: black;
+					margin-bottom: 8px;
+				}
+
+			}
+
+			.debug-container {
+				display: flex;
+				width: 100%;
+				margin: 8px;
+				position: absolute;
+				top: 30px;
+				span {
+					padding-left: 20px;
+					text-decoration: underline;
+				}
+			}
+
+			.container {
+				margin: 50px 0px;
+			}
 		}
 
 	</style>
 </head>
 <body>
-<div class="debug-container">
-	<button id="debug">peak</button><span id='solution-debug'></span>
-</div>
 	<h1>Wordle</h1>
+	<div class="container">
 <h3>You have <span id="guess-num">6</span> tries left</h3>
 <div id="win-status"></div>
 <div class="guess-row" id="guess">
@@ -127,7 +206,6 @@
 <div>
 <div id="attempt"></div>
 <h3>Letters</h3>
-<p>color key: grey - unused, green - right place, yellow - in word, wrong place :(</p>
 <div class="alphabet">
 	<div class="letter" id="a">A</div>
 	<div class="letter" id="b">B</div>
@@ -156,6 +234,7 @@
 	<div class="letter" id="y">Y</div>
 	<div class="letter" id="z">Z</div>
 </div>
+<div id="guesses"></div>
 </div>
 <script>
 
@@ -205,24 +284,11 @@
 		return { status: 'incorrect', data  }
 	}
 	function getSolution() {
-		const solutions = ['apple', 'least', 'plant', 'maker', 'sandy']
+		const solutions = ['apple', 'least', 'plant', 'maker', 'sandy', 'books', 'braid', 'chest', 'brand']
 		const randomIndex= Math.floor((Math.random() * 5)) // get random number between 0 and 5, and use Math.floor() to ensure it's a whole number
 		return solutions[randomIndex]
 	}
 
-	// async function validate(guess) {
-	// 	const DICTIONARY_CHECK_API = 'https://api.dictionaryapi.dev/api/v2/entries/en/'
-	// 	const url = DICTIONARY_CHECK_API + guess
-		
-	// 	try {
-	// 		const response = await fetch(url)
-	// 		return response.json()
-
-	// 	} catch (error) {
-	// 		console.error('error', error)
-	// 	}
-
-	// }
 	window.onload = () => {
 		let currentSolution = getSolution()
 		const debugBtn = document.getElementById('debug')
@@ -286,41 +352,57 @@
 			}
 			// checks for 5 letter
 			// checks if users has already guessed 6 words
+			// checks if it's valid word
 			if(currentGuess.length === 5 && guesses.length !== 6) {
-				console.log("checking...")
-				guesses.push(currentGuess)
-				// const guessValidWord = await validate(currentGuess)
-				// if(!guessValidWord.title) {
-				// 	console.log("valid word")
-				// }
-				// TODO: check if valid
-				const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
+				const DICTIONARY_CHECK_API = `https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`
+				let xhr = new XMLHttpRequest()
+				// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest_API/Synchronous_and_Asynchronous_Requests
+				// 3rd param true tells the request to be handled async
+				xhr.open("GET", DICTIONARY_CHECK_API, true)
+				xhr.onload = () => {
+					if(xhr.readyState === 4) {
+						if(xhr.status === 200) {
+							guesses.push(currentGuess)
+							const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
 
-				if (result.status !== 'correct') {
-					document.getElementById('guess-num').innerText = 6 - guesses.length
-					const attempt = document.getElementById('attempt')
-					// attempt.innerHTML = `<div>${currentGuess}</div>`
-					updateLetters(result.data)
+							if (result.status !== 'correct') {
+								document.getElementById('guess-num').innerText = 6 - guesses.length
+								const attempt = document.getElementById('attempt')
+								// attempt.innerHTML = `<div>${currentGuess}</div>`
+								updateLetters(result.data)
+							}
+							if (result.status === 'correct') {
+								currentSolution.split('').forEach(letter => {
+									console.log("letter", letter)
+									document.getElementById(letter).classList.add('correct')
+								})
+								const winStatus = document.getElementById('win-status')
+								winStatus.innerText = 'YOU GOT IT'
+								guessBtn.innerText = 'play again?'
+							}
+							console.log("result", result)
+						} else {
+							alert('NOT REAL WORD, try again')
+						}
+						
+
+					} else {
+						alert("problem with request, try again")
+					}
 				}
-				if (result.status === 'correct') {
-					currentSolution.split('').forEach(letter => {
-						console.log("letter", letter)
-						document.getElementById(letter).classList.add('correct')
-					})
-					const winStatus = document.getElementById('win-status')
-					winStatus.innerText = 'YOU GOT IT'
-					guessBtn.innerText = 'play again?'
-				}
-				console.log("result", result)
+
+				xhr.send(null)
 			}
-
-			console.log("guesses", guesses)
 		})
-
-
-
 		
 	}
 </script>
+</div>
+<footer>
+	<div class="debug-container">
+		<button id="debug">peak</button><span id='solution-debug'></span>
+	</div>
+	<p>color key: <span id="grey">grey</span> - unused, <span id="green">green</span> - right place, <span id="yellow">yellow</span>- in word, wrong place :(</p>
+</footer>
 </body>
 </html>
