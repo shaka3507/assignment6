@@ -15,7 +15,7 @@
 				border: none;
 				width: 250px;
 				line-height: 48px;
-				font-size: 36px;
+				font-size: 1.5em;
 				border-bottom: 2px solid lightgrey;
 				margin-top: 10px;
 				text-align: center;
@@ -26,7 +26,6 @@
 			input:focus {
 				all: unset;
 				line-height: 48px;
-				font-size: 36px;
 				width: 275px;
 				border-bottom: 2px solid blue;
 				margin-top: 10px;
@@ -62,6 +61,7 @@
 			color: white;
 			width: 28px;
 			height: 28px;
+			border: 1px solid white;
 		}
 
 		.misplaced {
@@ -154,6 +154,17 @@
 			padding: 4px;
 		}
 
+		@keyframes growShrink {
+			from { font-size: 2em; }
+			to { font-size: 1em }
+		}
+
+
+		.animate {
+			animation-name: growShrink;
+			animation-duration: 2s;
+		}
+
 
 		@media only screen and (max-width: 600px) {
 			.alphabet {
@@ -191,6 +202,13 @@
 			.container {
 				margin: 50px 0px;
 			}
+
+			footer {
+				left: 0;
+				bottom: 50px;
+				width: 100%;
+				font-size: 10px;
+			}
 		}
 
 	</style>
@@ -205,7 +223,6 @@
 	<br />
 	<button id="guess-btn">guess</button>
 </div>
-<div>
 <div id="attempt"></div>
 <h3>Letters</h3>
 <div class="alphabet">
@@ -237,7 +254,12 @@
 	<div class="letter" id="z">Z</div>
 </div>
 <div id="guesses"></div>
-</div>
+<footer>
+	<div class="debug-container">
+				<button id="debug">peak</button><span id='solution-debug'></span>
+	</div>
+	<p>color key: <span id="grey">grey</span> - unused, <span id="green">green</span> - right place, <span id="yellow">yellow</span>- in word, wrong place :(</p>
+</footer>
 <script>
 
 	function resetButtons() {
@@ -250,6 +272,7 @@
 	}
 
 	function compareWordToSolution(word, solution) {
+		// if it's the same, finish executing and return a correct status
 		if (word === solution) {
 			return { status: 'correct' }
 		}
@@ -259,11 +282,13 @@
 		let misplacedLetters = []
 		let correctLetters = []
 
-		// compare
+		// compare using for loop since it's a string and not an array
 		for(let i = 0; i < word.length; i++) {
 			// if the same letter is at the same index in solution, add to correct letters array
 			if(word[i] === solution[i]) {
 				correctLetters.push({ letter: word[i], index: i })
+				// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/continue
+				// added 'continue' so that we dont continue to check if this letter is misplaced or correct
 				continue
 			}
 
@@ -287,9 +312,10 @@
 		return { status: 'incorrect', data  }
 	}
 	function getSolution() {
-		// const solutions = ['apple', 'least', 'plant', 'maker', 'sandy', 'books', 'braid', 'chest', 'brand']
-		const solutions = ['eaten', 'apple']
-		const randomIndex= Math.floor((Math.random() * 2)) // get random number between 0 and 5, and use Math.floor() to ensure it's a whole number
+		const solutions = ['apple', 'eaten', 'lasso','least', 'plant', 'maker', 'sandy', 'books', 'braid', 'chest', 'brand']
+		// const solutions = ['eaten', 'apple']
+		// get random number between 0 and 5, and use Math.floor() to ensure it's a whole number
+		const randomIndex= Math.floor((Math.random() * 5))
 		return solutions[randomIndex]
 	}
 
@@ -299,6 +325,9 @@
 		const debugBtn = document.getElementById('debug')
 		const winStatus = document.getElementById('win-status')
 		const guessNum = document.getElementById('guess-num')
+		const solutionSpan = document.getElementById('solution-debug')
+		const guessBtn = document.getElementById('guess-btn')
+		const buttons = document.getElementsByClassName('letter')
 
 		const restart = () => {
 
@@ -312,7 +341,9 @@
 			document.querySelectorAll('input')[0].value = ''
 			winStatus.innerText = ''
 			guessBtn.innerText = 'guess'
-			guessNum.innerText = '6'
+			guessNum.innerText = 6
+			solutionSpan.innerText = ''
+			debugBtn.innerText = 'hide'
 			// update colors for letters
 			resetButtons()
 		}
@@ -342,7 +373,7 @@
 		}
 
 		debugBtn.addEventListener('click', () => {
-			const solutionSpan = document.getElementById('solution-debug')
+			console.log('...click??')
 			if(!solutionSpan.innerText.length) {
 				solutionSpan.innerText = currentSolution
 				debugBtn.innerText = 'hide'
@@ -352,10 +383,6 @@
 			}
 		})
 
-		console.log("currentSolution", currentSolution)
-
-		const guessBtn = document.getElementById('guess-btn')
-
 
 		guessBtn.addEventListener('click', () => {
 			console.log("inneer btn", guessBtn.innerText)
@@ -363,13 +390,16 @@
 			if(guessBtn.innerText === 'play again?') {
 				return restart()
 			}
+
+			// if guess length is less than
 			if(currentGuess.length < 5) {
 				alert('too short')
 			}
-			if(guess.length === 6) {
+
+			// if no more guesses
+			if(guesses.length === 6) {
 				guessBtn.innerText = 'play again?'
 				winStatus.innerText = 'answer is: ' + currentSolution
-				// reset game
 			}
 			// checks for 5 letter
 			// checks if users has already guessed 6 words
@@ -386,14 +416,23 @@
 							guesses.push(currentGuess)
 							const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
 
-							if (result.status !== 'correct') {
+							if(result.status !== 'correct' && guesses.length === 6) {
+								document.getElementById('guess-num').innerText = 0
+								winStatus.innerText = 'next time...' + ' ' + 'solution is ' + currentSolution
+								guessBtn.innerText = 'play again?'
+								return
+							}
+
+							if (result.status !== 'correct' && guesses.length < 6) {
 								document.getElementById('guess-num').innerText = 6 - guesses.length
 								const attempt = document.getElementById('attempt')
 								// attempt.innerHTML = `<div>${currentGuess}</div>`
 								updateLetterUi(result.data)
 							}
+
 							if (result.status === 'correct') {
 								// update misplaced
+								winStatus.classList.add('animate')
 								document.querySelectorAll('.misplaced').forEach(misplaced => {
 									misplaced.classList.remove('misplaced')
 								})
@@ -404,7 +443,6 @@
 								winStatus.innerText = 'YOU GOT IT'
 								guessBtn.innerText = 'play again?'
 							}
-							console.log("result", result)
 						} else {
 							alert('NOT REAL WORD, try again')
 						}
@@ -421,12 +459,5 @@
 		
 	}
 </script>
-</div>
-<footer>
-	<div class="debug-container">
-		<button id="debug">peak</button><span id='solution-debug'></span>
-	</div>
-	<p>color key: <span id="grey">grey</span> - unused, <span id="green">green</span> - right place, <span id="yellow">yellow</span>- in word, wrong place :(</p>
-</footer>
 </body>
 </html>
