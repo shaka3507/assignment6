@@ -137,6 +137,7 @@
 		}
 
 		footer {
+			background-color: white;
 			position: absolute;
 			bottom: 0;
 			border-top: 2px solid black;
@@ -240,6 +241,7 @@
 <script>
 
 	function resetButtons() {
+		console.log("reset...")
 		document.querySelectorAll('.letter').forEach(letter => {
 			letter.classList.remove('correct')
 			letter.classList.remove('misplaced')
@@ -285,21 +287,39 @@
 		return { status: 'incorrect', data  }
 	}
 	function getSolution() {
-		const solutions = ['apple', 'least', 'plant', 'maker', 'sandy', 'books', 'braid', 'chest', 'brand']
-		const randomIndex= Math.floor((Math.random() * 5)) // get random number between 0 and 5, and use Math.floor() to ensure it's a whole number
+		// const solutions = ['apple', 'least', 'plant', 'maker', 'sandy', 'books', 'braid', 'chest', 'brand']
+		const solutions = ['eaten', 'apple']
+		const randomIndex= Math.floor((Math.random() * 2)) // get random number between 0 and 5, and use Math.floor() to ensure it's a whole number
 		return solutions[randomIndex]
 	}
 
 	window.onload = () => {
 		let currentSolution = getSolution()
+		let guesses = []
 		const debugBtn = document.getElementById('debug')
+		const winStatus = document.getElementById('win-status')
+		const guessNum = document.getElementById('guess-num')
 
 		const restart = () => {
+
+			// find new solution
 			currentSolution = getSolution()
+
+			// clear out guess array
+			guesses = []
+
+			// update text
+			document.querySelectorAll('input')[0].value = ''
+			winStatus.innerText = ''
+			guessBtn.innerText = 'guess'
+			guessNum.innerText = '6'
 			// update colors for letters
+			resetButtons()
 		}
 
-		const updateLetters = letterData => {
+		const updateLetterUi = letterData => {
+
+			resetButtons()
 
 			if(letterData.correct) {
 				letterData.correct.forEach((el) => {
@@ -333,15 +353,15 @@
 		})
 
 		console.log("currentSolution", currentSolution)
-		const guesses = []
 
 		const guessBtn = document.getElementById('guess-btn')
 
 
 		guessBtn.addEventListener('click', () => {
+			console.log("inneer btn", guessBtn.innerText)
 			const currentGuess = document.querySelectorAll('input')[0].value
 			if(guessBtn.innerText === 'play again?') {
-				console.log("restart game") // todo
+				return restart()
 			}
 			if(currentGuess.length < 5) {
 				alert('too short')
@@ -370,14 +390,17 @@
 								document.getElementById('guess-num').innerText = 6 - guesses.length
 								const attempt = document.getElementById('attempt')
 								// attempt.innerHTML = `<div>${currentGuess}</div>`
-								updateLetters(result.data)
+								updateLetterUi(result.data)
 							}
 							if (result.status === 'correct') {
+								// update misplaced
+								document.querySelectorAll('.misplaced').forEach(misplaced => {
+									misplaced.classList.remove('misplaced')
+								})
 								currentSolution.split('').forEach(letter => {
 									console.log("letter", letter)
 									document.getElementById(letter).classList.add('correct')
 								})
-								const winStatus = document.getElementById('win-status')
 								winStatus.innerText = 'YOU GOT IT'
 								guessBtn.innerText = 'play again?'
 							}
