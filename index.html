@@ -1,463 +1,449 @@
 <!DOCTYPE html>
 <head>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lato:wght@100;400&display=swap" rel="stylesheet">
-	<style type="text/css">
-		body {
-			text-align: center;
-			font-family: "DM Serif Display", georgia, serif;
-		}
-
-		.guess-row {
-			input {
-				border: none;
-				width: 250px;
-				line-height: 48px;
-				font-size: 1.5em;
-				border-bottom: 2px solid lightgrey;
-				margin-top: 10px;
-				text-align: center;
-				text-transform: uppercase;
-				font-family: "DM Serif Display", georgia, serif;
-			}
-
-			input:focus {
-				all: unset;
-				line-height: 48px;
-				width: 275px;
-				border-bottom: 2px solid blue;
-				margin-top: 10px;
-				text-align: center;
-				text-transform: uppercase;
-				font-family: "DM Serif Display", georgia, serif;
-			}
-
-			button {
-				border: 2px solid black;
-				color: white;
-				background: black;
-			}
-
-			#guess-btn {
-				all: unset;
-				margin-top: 10px;
-				border: 2px solid green;
-				background: none;
-				color: black;
-				letter-spacing: 1px;
-				padding: 3px 8px;
-			}
-
-			#guess-btn:hover {
-				background-color: green;
-				color: white;
-			}
-		}
-
-		.correct {
-			background-color: green !important;
-			color: white;
-			width: 28px;
-			height: 28px;
-			border: 1px solid white;
-		}
-
-		.misplaced {
-			background-color: gold !important;
-			width: 28px;
-			height: 28px;
-		}
-
-		.wrong {
-			background-color: grey !important;
-			width: 28px;
-			height: 28px;
-		}
-
-		.alphabet {
-			margin-top: 20px;
-			display: flex;
-			justify-content: center;  			
-			flex-wrap: wrap;
-			width: 500px;
-			margin: 0 auto;
-			div {
-				margin: 0px 2px;
-				background-color: white;
-				padding: 3px;
-				width: 24px;
-				height: 24px;
-				border: 1px solid grey;
-				color: black;
-				margin-bottom: 8px;
-				letter-height: 24px;
-			}
-
-		}
-
-		#debug {
-			all: unset;
-			border: 2px solid black;
-			width: fit-content;
-			padding: 4px;
-			color: darkcyan;
-		}
-
-
-		#yellow {
-			color: gold;
-			font-weight: 700;
-		}
-		#grey {
-			color: grey;
-			font-weight: 700;
-		}
-		#green {
-			color: green;
-			font-weight: 700;
-		}
-
-		#attempt {
-			font-size: 24px;
-		}
-
-		.debug-container {
-			display: flex;
-			width: 100%;
-			margin: 8px;
-			align-items: vertical;
-			position: absolute;
-			left: 0;
-			span {
-				padding-left: 20px;
-				text-decoration: underline;
-			}
-		}
-
-		footer {
-			background-color: white;
-			position: absolute;
-			bottom: 0;
-			border-top: 2px solid black;
-			width: 100%;
-		}
-
-
-		.container {
-			margin: 200px 0px;
-		}
-
-		#guess-num {
-			border: 2px solid red;
-			padding: 4px;
-		}
-
-		@keyframes growShrink {
-			from { font-size: 2em; }
-			to { font-size: 1em }
-		}
-
-
-		.animate {
-			animation-name: growShrink;
-			animation-duration: 2s;
-		}
-
-
-		@media only screen and (max-width: 600px) {
-			.alphabet {
-				margin-top: 20px;
-				display: flex;
-				justify-content: center;  			
-				flex-wrap: wrap;
-				width: 300px;
-				margin: 0 auto;
-				div {
-					margin: 0px 2px;
-					background-color: white;
-					padding: 3px;
-					width: 48px;
-					height: 48px;
-					border: 1px solid grey;
-					color: black;
-					margin-bottom: 8px;
-					letter-height: 50px;
-				}
-
-			}
-			.debug-container {
-				display: flex;
-				width: 100%;
-				margin: 8px;
-				position: absolute;
-				top: 30px;
-				span {
-					padding-left: 20px;
-					text-decoration: underline;
-				}
-			}
-
-			.container {
-				margin: 50px 0px;
-			}
-
-			footer {
-				left: 0;
-				bottom: 50px;
-				width: 100%;
-				font-size: 10px;
-			}
-		}
-
-	</style>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lato:wght@100;400&display=swap" rel="stylesheet">
+   <style type="text/css">
+      body {
+      text-align: center;
+      font-family: "DM Serif Display", georgia, serif;
+      }
+      .guess-row {
+      input {
+      border: none;
+      width: 250px;
+      line-height: 48px;
+      font-size: 1.5em;
+      border-bottom: 2px solid lightgrey;
+      margin-top: 10px;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: "DM Serif Display", georgia, serif;
+      }
+      input:focus {
+      all: unset;
+      line-height: 48px;
+      width: 275px;
+      border-bottom: 2px solid blue;
+      margin-top: 10px;
+      text-align: center;
+      text-transform: uppercase;
+      font-family: "DM Serif Display", georgia, serif;
+      }
+      button {
+      border: 2px solid black;
+      color: white;
+      background: black;
+      }
+      #guess-btn {
+      all: unset;
+      margin-top: 10px;
+      border: 2px solid green;
+      background: none;
+      color: black;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      }
+      #guess-btn:hover {
+      background-color: green;
+      color: white;
+      }
+      }
+      .correct {
+      background-color: green !important;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border: 1px solid white;
+      }
+      .misplaced {
+      background-color: gold !important;
+      width: 28px;
+      height: 28px;
+      }
+      .wrong {
+      background-color: grey !important;
+      width: 28px;
+      height: 28px;
+      }
+      .alphabet {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;  			
+      flex-wrap: wrap;
+      width: 500px;
+      margin: 0 auto;
+      div {
+	      margin: 0px 2px;
+	      background-color: white;
+	      padding: 3px;
+	      width: 24px;
+	      height: 24px;
+	      border: 1px solid grey;
+	      color: black;
+	      margin-bottom: 8px;
+	      letter-height: 24px;
+      	}
+      }
+      #debug {
+      all: unset;
+      border: 2px solid black;
+      width: fit-content;
+      padding: 4px;
+      color: darkcyan;
+      }
+      #yellow {
+      color: gold;
+      font-weight: 700;
+      }
+      #grey {
+      color: grey;
+      font-weight: 700;
+      }
+      #green {
+      color: green;
+      font-weight: 700;
+      }
+      #attempt {
+      font-size: 24px;
+      }
+      .debug-container {
+      display: flex;
+      width: 100%;
+      margin: 8px;
+      align-items: vertical;
+      position: absolute;
+      left: 0;
+      span {
+      padding-left: 20px;
+      text-decoration: underline;
+      }
+      }
+      footer {
+      background-color: white;
+      position: absolute;
+      bottom: 0;
+      border-top: 2px solid black;
+      width: 100%;
+      }
+      .container {
+      margin: 200px 0px;
+      }
+      #guess-num {
+      border: 2px solid red;
+      padding: 4px;
+      }
+      @keyframes growShrink {
+      from { font-size: 2em; }
+      to { font-size: 1em }
+      }
+      .animate {
+      animation-name: growShrink;
+      animation-duration: 2s;
+      }
+      @media only screen and (max-width: 600px) {
+      .alphabet {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;  			
+      flex-wrap: wrap;
+      width: 300px;
+      margin: 0 auto;
+      div {
+      margin: 0px 2px;
+      background-color: white;
+      padding: 3px;
+      width: 48px;
+      height: 48px;
+      border: 1px solid grey;
+      color: black;
+      margin-bottom: 8px;
+      letter-height: 50px;
+      }
+      }
+      .debug-container {
+      display: flex;
+      width: 100%;
+      margin: 8px;
+      position: absolute;
+      top: 30px;
+      span {
+      padding-left: 20px;
+      text-decoration: underline;
+      }
+      }
+      .container {
+      margin: 50px 0px;
+      }
+      footer {
+      left: 0;
+      bottom: 50px;
+      width: 100%;
+      font-size: 10px;
+      }
+      }
+   </style>
 </head>
 <body>
-	<h1>Wordle</h1>
-	<div class="container">
-<h3>You have <span id="guess-num">6</span> tries left</h3>
-<div id="win-status"></div>
-<div class="guess-row" id="guess">
-	<input type="text" id="input0" maxlength="5"/>
-	<br />
-	<button id="guess-btn">guess</button>
-</div>
-<div id="attempt"></div>
-<h3>Letters</h3>
-<div class="alphabet">
-	<div class="letter" id="a">A</div>
-	<div class="letter" id="b">B</div>
-	<div class="letter" id="c">C</div>
-	<div class="letter" id="d">D</div>
-	<div class="letter" id="e">E</div>
-	<div class="letter" id="f">F</div>
-	<div class="letter" id="g">G</div>
-	<div class="letter" id="h">H</div>
-	<div class="letter" id="i">I</div>
-	<div class="letter" id="j">J</div>
-	<div class="letter" id="k">K</div>
-	<div class="letter" id="l">L</div>
-	<div class="letter" id="m">M</div>
-	<div class="letter" id="n">N</div>
-	<div class="letter" id="o">O</div>
-	<div class="letter" id="p">P</div>
-	<div class="letter" id="q">Q</div>
-	<div class="letter" id="r">R</div>
-	<div class="letter" id="s">S</div>
-	<div class="letter" id="t">T</div>
-	<div class="letter" id="u">U</div>
-	<div class="letter" id="v">V</div>
-	<div class="letter" id="w">W</div>
-	<div class="letter" id="x">X</div>
-	<div class="letter" id="y">Y</div>
-	<div class="letter" id="z">Z</div>
-</div>
-<div id="guesses"></div>
-<footer>
-	<div class="debug-container">
-				<button id="debug">peak</button><span id='solution-debug'></span>
-	</div>
-	<p>color key: <span id="grey">grey</span> - unused, <span id="green">green</span> - right place, <span id="yellow">yellow</span>- in word, wrong place :(</p>
-</footer>
-<script>
-
-	function resetButtons() {
-		console.log("reset...")
-		document.querySelectorAll('.letter').forEach(letter => {
-			letter.classList.remove('correct')
-			letter.classList.remove('misplaced')
-			letter.classList.remove('wrong')
-		})
-	}
-
-	function compareWordToSolution(word, solution) {
-		// if it's the same, finish executing and return a correct status
-		if (word === solution) {
-			return { status: 'correct' }
-		}
-
-		let data
-		let wrongLetters = []
-		let misplacedLetters = []
-		let correctLetters = []
-
-		// compare using for loop since it's a string and not an array
-		for(let i = 0; i < word.length; i++) {
-			// if the same letter is at the same index in solution, add to correct letters array
-			if(word[i] === solution[i]) {
-				correctLetters.push({ letter: word[i], index: i })
-				// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/continue
-				// added 'continue' so that we dont continue to check if this letter is misplaced or correct
-				continue
-			}
-
-			// if a letter exists, add to misplaced
-			if(solution.indexOf(word[i]) !== -1) {
-				misplacedLetters.push({ letter: word[i] })
-			}
-
-			// if a letter doesnt exist, add to wrong letters 
-			if(solution.indexOf(word[i]) === -1) {
-				wrongLetters.push({ letter: word[i], index: i})
-			}
-		}
-
-		data = {
-			correct: correctLetters,
-			wrong: wrongLetters,
-			misplaced: misplacedLetters
-		}
-
-		return { status: 'incorrect', data  }
-	}
-	function getSolution() {
-		const solutions = ['apple', 'eaten', 'lasso','least', 'plant', 'maker', 'sandy', 'books', 'braid', 'chest', 'brand']
-		// const solutions = ['eaten', 'apple']
-		// get random number between 0 and 5, and use Math.floor() to ensure it's a whole number
-		const randomIndex= Math.floor((Math.random() * 5))
-		return solutions[randomIndex]
-	}
-
-	window.onload = () => {
-		let currentSolution = getSolution()
-		let guesses = []
-		const debugBtn = document.getElementById('debug')
-		const winStatus = document.getElementById('win-status')
-		const guessNum = document.getElementById('guess-num')
-		const solutionSpan = document.getElementById('solution-debug')
-		const guessBtn = document.getElementById('guess-btn')
-		const buttons = document.getElementsByClassName('letter')
-
-		const restart = () => {
-
-			// find new solution
-			currentSolution = getSolution()
-
-			// clear out guess array
-			guesses = []
-
-			// update text
-			document.querySelectorAll('input')[0].value = ''
-			winStatus.innerText = ''
-			guessBtn.innerText = 'guess'
-			guessNum.innerText = 6
-			solutionSpan.innerText = ''
-			debugBtn.innerText = 'hide'
-			// update colors for letters
-			resetButtons()
-		}
-
-		const updateLetterUi = letterData => {
-
-			resetButtons()
-
-			if(letterData.correct) {
-				letterData.correct.forEach((el) => {
-					document.getElementById(el.letter).classList.remove('misplaced')
-					document.getElementById(el.letter).classList.add('correct')
-				})
-			}
-
-			if(letterData.misplaced) {
-				letterData.misplaced.forEach((el) => {
-					document.getElementById(el.letter).classList.add('misplaced')
-				})
-			}
-
-			if(letterData.wrong) {
-				letterData.wrong.forEach((el) => {
-					document.getElementById(el.letter).classList.add('wrong')
-				})
-			}
-		}
-
-		debugBtn.addEventListener('click', () => {
-			console.log('...click??')
-			if(!solutionSpan.innerText.length) {
-				solutionSpan.innerText = currentSolution
-				debugBtn.innerText = 'hide'
-			} else {
-				solutionSpan.innerText = ''
-				debugBtn.innerText = 'peak'
-			}
-		})
-
-
-		guessBtn.addEventListener('click', () => {
-			console.log("inneer btn", guessBtn.innerText)
-			const currentGuess = document.querySelectorAll('input')[0].value
-			if(guessBtn.innerText === 'play again?') {
-				return restart()
-			}
-
-			// if guess length is less than
-			if(currentGuess.length < 5) {
-				alert('too short')
-			}
-
-			// if no more guesses
-			if(guesses.length === 6) {
-				guessBtn.innerText = 'play again?'
-				winStatus.innerText = 'answer is: ' + currentSolution
-			}
-			// checks for 5 letter
-			// checks if users has already guessed 6 words
-			// checks if it's valid word
-			if(currentGuess.length === 5 && guesses.length !== 6) {
-				const DICTIONARY_CHECK_API = `https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`
-				let xhr = new XMLHttpRequest()
-				// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest_API/Synchronous_and_Asynchronous_Requests
-				// 3rd param true tells the request to be handled async
-				xhr.open("GET", DICTIONARY_CHECK_API, true)
-				xhr.onload = () => {
-					if(xhr.readyState === 4) {
-						if(xhr.status === 200) {
-							guesses.push(currentGuess)
-							const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
-
-							if(result.status !== 'correct' && guesses.length === 6) {
-								document.getElementById('guess-num').innerText = 0
-								winStatus.innerText = 'next time...' + ' ' + 'solution is ' + currentSolution
-								guessBtn.innerText = 'play again?'
-								return
-							}
-
-							if (result.status !== 'correct' && guesses.length < 6) {
-								document.getElementById('guess-num').innerText = 6 - guesses.length
-								const attempt = document.getElementById('attempt')
-								// attempt.innerHTML = `<div>${currentGuess}</div>`
-								updateLetterUi(result.data)
-							}
-
-							if (result.status === 'correct') {
-								// update misplaced
-								winStatus.classList.add('animate')
-								document.querySelectorAll('.misplaced').forEach(misplaced => {
-									misplaced.classList.remove('misplaced')
-								})
-								currentSolution.split('').forEach(letter => {
-									console.log("letter", letter)
-									document.getElementById(letter).classList.add('correct')
-								})
-								winStatus.innerText = 'YOU GOT IT'
-								guessBtn.innerText = 'play again?'
-							}
-						} else {
-							alert('NOT REAL WORD, try again')
-						}
-						
-
-					} else {
-						alert("problem with request, try again")
-					}
-				}
-
-				xhr.send(null)
-			}
-		})
-		
-	}
-</script>
+   <h1>Wordle</h1>
+   <div class="container">
+   <h3>You have <span id="guess-num">6</span> tries left</h3>
+   <div id="win-status"></div>
+   <div class="guess-row" id="guess">
+      <input type="text" id="input0" maxlength="5"/>
+      <br />
+      <button id="guess-btn">guess</button>
+   </div>
+   <div id="attempt"></div>
+   <h3>Letters</h3>
+   <div class="alphabet">
+      <div class="letter" id="a">A</div>
+      <div class="letter" id="b">B</div>
+      <div class="letter" id="c">C</div>
+      <div class="letter" id="d">D</div>
+      <div class="letter" id="e">E</div>
+      <div class="letter" id="f">F</div>
+      <div class="letter" id="g">G</div>
+      <div class="letter" id="h">H</div>
+      <div class="letter" id="i">I</div>
+      <div class="letter" id="j">J</div>
+      <div class="letter" id="k">K</div>
+      <div class="letter" id="l">L</div>
+      <div class="letter" id="m">M</div>
+      <div class="letter" id="n">N</div>
+      <div class="letter" id="o">O</div>
+      <div class="letter" id="p">P</div>
+      <div class="letter" id="q">Q</div>
+      <div class="letter" id="r">R</div>
+      <div class="letter" id="s">S</div>
+      <div class="letter" id="t">T</div>
+      <div class="letter" id="u">U</div>
+      <div class="letter" id="v">V</div>
+      <div class="letter" id="w">W</div>
+      <div class="letter" id="x">X</div>
+      <div class="letter" id="y">Y</div>
+      <div class="letter" id="z">Z</div>
+   </div>
+   <div id="guesses"></div>
+   <footer>
+      <div class="debug-container">
+         <button id="debug">peak</button><span id='solution-debug'></span>
+      </div>
+      <p>color key: <span id="grey">grey</span> - unused, <span id="green">green</span> - right place, <span id="yellow">yellow</span>- in word, wrong place :(</p>
+   </footer>
+   <script>
+      function resetButtons(isNewGame) {
+      	console.log("reset...")
+      	document.querySelectorAll('.letter').forEach(letter => {
+      		letter.classList.remove('correct')
+      		letter.classList.remove('misplaced')
+      		if(isNewGame) letter.classList.remove('wrong')
+      	})
+      }
+      
+      function compareWordToSolution(word, solution) {
+      	// if it's the same, finish executing and return a correct status
+      	if (word === solution) {
+      		return { status: 'correct' }
+      	}
+      
+      	let data
+      	let wrongLetters = []
+      	let misplacedLetters = []
+      	let correctLetters = []
+      
+      	// compare using for loop since it's a string and not an array
+      	for(let i = 0; i < word.length; i++) {
+      		// if the same letter is at the same index in solution, add to correct letters array
+      		if(word[i] === solution[i]) {
+      			correctLetters.push({ letter: word[i], index: i })
+      			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/continue
+      			// added 'continue' so that we dont continue to check if this letter is misplaced or correct
+      			continue
+      		}
+      
+      		// if a letter exists, add to misplaced
+      		if(solution.indexOf(word[i]) !== -1) {
+      			misplacedLetters.push({ letter: word[i] })
+      		}
+      
+      		// if a letter doesnt exist, add to wrong letters 
+      		if(solution.indexOf(word[i]) === -1) {
+      			wrongLetters.push({ letter: word[i], index: i})
+      		}
+      	}
+      
+      	data = {
+      		correct: correctLetters,
+      		wrong: wrongLetters,
+      		misplaced: misplacedLetters
+      	}
+      
+      	return { status: 'incorrect', data  }
+      }
+      function getSolution() {
+      	const solutions = ['canny', 'canoe', 'canon', 'caper', 'basil','basin','basis','baste','batch','eight','eject', 'eking', 'elate', 'elbow', 'elder']
+      	// get random number between 0 and 14, and use Math.floor() to ensure it's a whole number because indexes are whole numbers
+      	const randomIndex = Math.floor((Math.random() * 14)) // get random index
+      	// return word at index
+      	return solutions[randomIndex]
+      }
+      
+      window.onload = () => {
+      
+      	// listen for key press
+      	document.addEventListener('keydown', () => {
+      		const input = document.getElementById('input0')
+      		if(event.key === 'Enter') {
+      			document.getElementById('guess-btn').click()
+      			// regular expression to test whether a key letter has been pressed
+      		} else if (/[a-zA-Z]/.test(event.key)) {
+      			input.focus()
+      		}
+      	})
+      
+      
+      	// get current solution
+      	let currentSolution = getSolution()
+      	let guesses = []
+      	const debugBtn = document.getElementById('debug')
+      	const winStatus = document.getElementById('win-status')
+      	const guessNum = document.getElementById('guess-num')
+      	const solutionSpan = document.getElementById('solution-debug')
+      	const guessBtn = document.getElementById('guess-btn')
+      	const buttons = document.getElementsByClassName('letter')
+      
+      	const restart = () => {
+      
+      		// find new solution
+      		currentSolution = getSolution()
+      
+      		// clear out guess array
+      		guesses = []
+      
+      		// update text
+      		document.querySelectorAll('input')[0].value = ''
+      		winStatus.innerText = ''
+      		guessBtn.innerText = 'guess'
+      		guessNum.innerText = 6
+      		solutionSpan.innerText = ''
+      		debugBtn.innerText = 'hide'
+      	}
+      
+      	const updateLetterUi = letterData => {
+      
+      		resetButtons(false)
+      
+      		if(letterData.correct) {
+      			letterData.correct.forEach((el) => {
+      				document.getElementById(el.letter).classList.remove('misplaced')
+      				document.getElementById(el.letter).classList.add('correct')
+      			})
+      		}
+      
+      		if(letterData.misplaced) {
+      			letterData.misplaced.forEach((el) => {
+      				document.getElementById(el.letter).classList.add('misplaced')
+      			})
+      		}
+      
+      		if(letterData.wrong) {
+      			letterData.wrong.forEach((el) => {
+      				document.getElementById(el.letter).classList.add('wrong')
+      			})
+      		}
+      	}
+      
+      	debugBtn.addEventListener('click', () => {
+      		if(!solutionSpan.innerText.length) {
+      			solutionSpan.innerText = currentSolution
+      			debugBtn.innerText = 'hide'
+      		} else {
+      			solutionSpan.innerText = ''
+      			debugBtn.innerText = 'peak'
+      		}
+      	})
+      
+      
+      	guessBtn.addEventListener('click', () => {
+      		console.log("inneer btn", guessBtn.innerText)
+      		const currentGuess = document.querySelectorAll('input')[0].value
+      		if(guessBtn.innerText === 'play again?') {
+      			// update colors for letters
+      			const isNewGame = true
+      			resetButtons(isNewGame)
+      			return restart()
+      		}
+      
+      		// if guess length is less than
+      		if(currentGuess.length < 5) {
+      			alert('too short')
+      		}
+      
+      		// if no more guesses
+      		if(guesses.length === 6) {
+      			guessBtn.innerText = 'play again?'
+      			winStatus.innerText = 'answer is: ' + currentSolution
+      		}
+      		// checks for 5 letter
+      		// checks if users has already guessed 6 words
+      		// checks if it's valid word
+      		if(currentGuess.length === 5 && guesses.length !== 6) {
+      			document.getElementById('guesses').innerText = guesses
+      			const DICTIONARY_CHECK_API = `https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`
+      			let xhr = new XMLHttpRequest()
+      			// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest_API/Synchronous_and_Asynchronous_Requests
+      			// 3rd param true tells the request to be handled async
+      			xhr.open("GET", DICTIONARY_CHECK_API, true)
+      			xhr.onload = () => {
+      				if(xhr.readyState === 4) {
+      					if(xhr.status === 200) {
+      						guesses.push(currentGuess)
+      						const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
+      
+      						if(result.status !== 'correct' && guesses.length === 6) {
+      							document.getElementById('guess-num').innerText = 0
+      							winStatus.innerText = 'next time...' + ' ' + 'solution is ' + currentSolution
+      							guessBtn.innerText = 'play again?'
+      							return
+      						}
+      
+      						if (result.status !== 'correct' && guesses.length < 6) {
+      							document.getElementById('guess-num').innerText = 6 - guesses.length
+      							const attempt = document.getElementById('attempt')
+      							// attempt.innerHTML = `<div>${currentGuess}</div>`
+      							updateLetterUi(result.data)
+      						}
+      
+      						if (result.status === 'correct') {
+      							// update misplaced
+      							winStatus.classList.add('animate')
+      							document.querySelectorAll('.misplaced').forEach(misplaced => {
+      								misplaced.classList.remove('misplaced')
+      							})
+      							currentSolution.split('').forEach(letter => {
+      								console.log("letter", letter)
+      								document.getElementById(letter).classList.add('correct')
+      							})
+      							winStatus.innerText = 'YOU GOT IT'
+      							guessBtn.innerText = 'play again?'
+      						}
+      					} else {
+      						alert('NOT REAL WORD, try again')
+      					}
+      					
+      
+      				} else {
+      					alert("problem with request, try again")
+      				}
+      			}
+      
+      			xhr.send(null)
+      		}
+      	})
+      	
+      }
+   </script>
 </body>
 </html>
