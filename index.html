@@ -129,7 +129,6 @@
       }
 
       .debug-container {
-          display: flex;
           width: 100%;
           margin: 8px;
           align-items: vertical;
@@ -201,7 +200,7 @@
               width: 100%;
               margin: 8px;
               position: absolute;
-              top: 30px;
+              bottom: 50px;
 
               span {
                   padding-left: 20px;
@@ -215,7 +214,7 @@
 
           footer {
               left: 0;
-              bottom: 50px;
+              bottom: 14px;
               width: 100%;
               font-size: 10px;
           }
@@ -224,6 +223,9 @@
 </head>
 <body>
    <h1>Wordle</h1>
+      <div class="debug-container">
+         <button id="debug">click to see answer</button><span id='solution-debug'></span>
+   </div>
    <div class="container">
    <h3>You have <span id="guess-num">6</span> tries left</h3>
    <div id="win-status"></div>
@@ -267,9 +269,6 @@
    <h3><em>guesses</em></h3>
    <div id="guesses"></div>
    <footer>
-      <div class="debug-container">
-         <button id="debug">peak</button><span id='solution-debug'></span>
-      </div>
       <p id="color-key">
          <span id="green">green</span> - correctly placed | <span id="yellow">yellow</span> misplaced | <span id="darkgrey">dark grey</span> - not in word.
       </p>
@@ -320,9 +319,9 @@
 
       // for getting a solution
       const getSolution = () => {
-      	const solutions = ['canny', 'canoe', 'canon', 'caper', 'basil','basin','basis','baste','batch','eight','eject', 'eking', 'elate', 'elbow', 'elder']
+      	const solutions = ['canny', 'canoe', 'canon', 'caper', 'basil','basin','basis','baste','batch','eight','eject', 'eking', 'elate', 'elbow', 'elder', 'group', 'grown', 'forty', 'equal', 'delay', 'focus', 'ought', 'press', 'price', 'maker', 'laugh','place', 'taste', 'watch', 'voice', 'valid']
       	// get random number between 0 and 14, and use Math.floor() to ensure it's a whole number because indexes are whole numbers
-      	const randomIndex = Math.floor((Math.random() * 14)) // get random index
+      	const randomIndex = Math.floor((Math.random() * 30)) // get random index since solutions array has 31 words, index could be 0-30
       	// return word at index
       	return solutions[randomIndex]
       }
@@ -381,6 +380,7 @@
             }
       
       	const restart = () => {
+            debugBtn.disabled = false
             resetGameUI()
       		// find new solution
       		currentSolution = getSolution()
@@ -392,7 +392,7 @@
       		guessBtn.innerText = 'guess' // update button ui
       		guessNum.innerText = 6
       		solutionSpan.innerText = ''
-      		debugBtn.innerText = 'hide' // update debug btn
+      		debugBtn.innerText = 'click to see answer' // update debug btn
             previouslyGuessedUi.innerHTML = ''
       	}
       
@@ -421,20 +421,14 @@
       
          // for debug button, add click event listener
       	debugBtn.addEventListener('click', () => {
-            // toggles showing and hiding 
-            // if solution span is empty, update to current solution, and toggle button text
-      		if(!solutionSpan.innerText.length) {
-      			solutionSpan.innerText = currentSolution
-      			debugBtn.innerText = 'hide'
-      		} else {
-               // if not, remove innerText and reset button to 'peak'
-      			solutionSpan.innerText = ''
-      			debugBtn.innerText = 'peak'
-      		}
+            // if they already guessed, this btn is disabled so cant use
+            // ensures user can only use at beginning of game
+            solutionSpan.innerText = currentSolution
       	})
       
          // for main logic, checks many things
       	guessBtn.addEventListener('click', () => {
+            debugBtn.disabled = true
             // first get guess value fron input field
       		const currentGuess = document.querySelectorAll('input')[0].value
             // if someone has already seen solution, text is 'play again', so they can restart
