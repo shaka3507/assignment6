@@ -82,7 +82,6 @@
           display: flex;
           justify-content: center;
           flex-wrap: wrap;
-          width: 500px;
           margin: 0 auto;
 
           div {
@@ -489,14 +488,13 @@
    						}
    
    						if (result.status !== 'correct' && guesses.length < 6) {
-   							document.getElementById('guess-num').innerText = 6 - guesses.length
-   							const attempt = document.getElementById('attempt')
+                        document.getElementById('guess-num').innerText = 6 - guesses.length
    							updateLetterUi(result.data)
    						}
    
    						if (result.status === 'correct') {
+                        document.getElementById('guess-num').innerText = 6 - guesses.length
    							winStatus.classList.add('animate')
-
                         // // update misplaced
    							// document.querySelectorAll('.misplaced').forEach(misplaced => {
    							// 	misplaced.classList.remove('misplaced')
