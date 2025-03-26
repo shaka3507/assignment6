@@ -26,8 +26,8 @@
           input:focus {
               all: unset;
               line-height: 48px;
-              width: 275px;
-              border-bottom: 2px solid blue;
+              width: 250px;
+              border-bottom: 1px solid #7279e5;
               margin-top: 10px;
               text-align: center;
               text-transform: uppercase;
@@ -43,33 +43,34 @@
           #guess-btn {
               all: unset;
               margin-top: 10px;
-              border: 2px solid green;
+              border: 2px solid #03ae00;
               background: none;
               color: black;
               letter-spacing: 1px;
               padding: 3px 8px;
+              border-radius: 2px;
           }
 
-          #guess-btn:hover {
-              background-color: green;
+          #guess-btn:active {
+              background-color: #03ae00;
               color: white;
           }
       }
 
       .misplaced {
-          background-color: gold !important;
+          background-color: #ccc838 !important;
           width: 28px;
           height: 28px;
       }
 
       .wrong {
-          background-color: grey !important;
+          background-color: #66635E !important;
           width: 28px;
           height: 28px;
       }
 
       .correct {
-          background-color: green !important;
+          background-color: #03ae00 !important;
           color: white;
           width: 28px;
           height: 28px;
@@ -86,12 +87,12 @@
 
           div {
               margin: 0px 2px;
-              background-color: white;
+              background-color: #ccc6bd;
               padding: 3px;
               width: 24px;
+              border-radius: 2px;
               height: 24px;
-              border: 1px solid grey;
-              color: black;
+              color: white;
               margin-bottom: 8px;
               letter-height: 24px;
           }
@@ -106,17 +107,21 @@
       }
 
       #yellow {
-          color: gold;
+          color:  #ccc838;
           font-weight: 700;
       }
 
       #grey {
-          color: grey;
+          color: #66635E;
           font-weight: 700;
+      }
+      #darkgrey {
+         color: #66635E;
+         font-weight: 700;
       }
 
       #green {
-          color: green;
+          color: #03ae00;
           font-weight: 700;
       }
 
@@ -151,7 +156,7 @@
       }
 
       #guess-num {
-          border: 2px solid red;
+          border: 2px solid #ff7070;
           padding: 4px;
       }
 
@@ -173,6 +178,9 @@
       }
       /* for mobile views or smaller width screens */
       @media only screen and (max-width: 600px) {
+         .color-key {
+            font-size: 12px;
+         }
           .alphabet {
               margin-top: 20px;
               display: flex;
@@ -182,13 +190,8 @@
               margin: 0 auto;
 
               div {
-                  margin: 0px 2px;
-                  background-color: white;
-                  padding: 3px;
-                  width: 48px;
-                  height: 48px;
-                  border: 1px solid grey;
-                  color: black;
+                  width: 24px;
+                  height: 24px;
                   margin-bottom: 8px;
                   letter-height: 50px;
               }
@@ -262,13 +265,15 @@
       <div class="letter" id="y">Y</div>
       <div class="letter" id="z">Z</div>
    </div>
-   <h3>previously guessed</h3>
+   <h3><em>guesses</em></h3>
    <div id="guesses"></div>
    <footer>
       <div class="debug-container">
          <button id="debug">peak</button><span id='solution-debug'></span>
       </div>
-      <p>color key: <span id="grey">grey</span> - unused, <span id="green">green</span> - right place, <span id="yellow">yellow</span>- in word, wrong place :(</p>
+      <p id="color-key">
+         <span id="green">green</span> - correctly placed | <span id="yellow">yellow</span> misplaced | <span id="darkgrey">dark grey</span> - not in word.
+      </p>
    </footer>
    <script>
 
@@ -339,7 +344,7 @@
                result += `<span id='grey'>${guess[i]}<span>`
             }
          }
-         return result + '<br>'
+         return result += '<br>'
       }
       
       // main onload function
