@@ -489,10 +489,6 @@
    						if (result.status === 'correct') {
                         document.getElementById('guess-num').innerText = 6 - guesses.length
    							winStatus.classList.add('animate')
-                        // // update misplaced
-   							// document.querySelectorAll('.misplaced').forEach(misplaced => {
-   							// 	misplaced.classList.remove('misplaced')
-   							// })
    							currentSolution.split('').forEach(letter => {
    								document.getElementById(letter).classList.add('correct')
    							})
