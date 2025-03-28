@@ -223,9 +223,9 @@
 </head>
 <body>
    <h1>Wordle</h1>
-      <div class="debug-container">
-         <button id="debug">click to see answer</button><span id='solution-debug'></span>
-   </div>
+    <div class="debug-container">
+      <button id="debug">click to see answer</button><span id='solution-debug'></span>
+    </div>
    <div class="container">
    <h3>You have <span id="guess-num">6</span> tries left</h3>
    <div id="win-status"></div>
@@ -274,56 +274,55 @@
       </p>
    </footer>
    <script>
-
       // HELPER FUNCTION SECTION
       const compareWordToSolution = (word, solution) => {
-      	// if it's the same, finish executing and return a correct status
-      	if (word === solution) {
-      		return { status: 'correct' }
-      	}
+        // if it's the same, finish executing and return a correct status
+        if (word === solution) {
+          return { status: 'correct' }
+        }
       
-      	let data
-      	let wrongLetters = []
-      	let misplacedLetters = []
-      	let correctLetters = []
+        let data
+        let wrongLetters = []
+        let misplacedLetters = []
+        let correctLetters = []
       
-      	// compare using for loop since it's a string and not an array
-      	for(let i = 0; i < word.length; i++) {
-      		// if the same letter is at the same index in solution, add to correct letters array
-      		if(word[i] === solution[i]) {
-      			correctLetters.push({ letter: word[i], index: i })
-      			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/continue
-      			// added 'continue' so that we dont continue to check if this letter is misplaced or correct
-      			continue
-      		}
+        // compare using for loop since it's a string and not an array
+        for(let i = 0; i < word.length; i++) {
+          // if the same letter is at the same index in solution, add to correct letters array
+          if(word[i] === solution[i]) {
+            correctLetters.push({ letter: word[i], index: i })
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/continue
+            // added 'continue' so that we dont continue to check if this letter is misplaced or correct
+            continue
+          }
       
-      		// if a letter exists, add to misplaced
-      		if(solution.indexOf(word[i]) !== -1) {
-      			misplacedLetters.push({ letter: word[i] })
-      		}
+          // if a letter exists, add to misplaced
+          if(solution.indexOf(word[i]) !== -1) {
+            misplacedLetters.push({ letter: word[i] })
+          }
       
-      		// if a letter doesnt exist, add to wrong letters 
-      		if(solution.indexOf(word[i]) === -1) {
-      			wrongLetters.push({ letter: word[i], index: i})
-      		}
-      	}
+          // if a letter doesnt exist, add to wrong letters 
+          if(solution.indexOf(word[i]) === -1) {
+            wrongLetters.push({ letter: word[i], index: i})
+          }
+        }
       
          // evaluation organized in object
-      	data = {
-      		correct: correctLetters,
-      		wrong: wrongLetters,
-      		misplaced: misplacedLetters
-      	}
-      	return { status: 'incorrect', data  }
+        data = {
+          correct: correctLetters,
+          wrong: wrongLetters,
+          misplaced: misplacedLetters
+        }
+        return { status: 'incorrect', data  }
       }
 
       // for getting a solution
       const getSolution = () => {
-      	const solutions = ['canny', 'canoe', 'canon', 'caper', 'basil','basin','basis','baste','batch','eight','eject', 'eking', 'elate', 'elbow', 'elder', 'group', 'grown', 'forty', 'equal', 'delay', 'focus', 'ought', 'press', 'price', 'maker', 'laugh','place', 'taste', 'watch', 'voice', 'valid']
-      	// get random number between 0 and 14, and use Math.floor() to ensure it's a whole number because indexes are whole numbers
-      	const randomIndex = Math.floor((Math.random() * 30)) // get random index since solutions array has 31 words, index could be 0-30
-      	// return word at index
-      	return solutions[randomIndex]
+        const solutions = ['canny', 'canoe', 'canon', 'caper', 'basil','basin','basis','baste','batch','eight','eject', 'eking', 'elate', 'elbow', 'elder', 'group', 'grown', 'forty', 'equal', 'delay', 'focus', 'ought', 'press', 'price', 'maker', 'laugh','place', 'taste', 'watch', 'voice', 'valid']
+        // get random number between 0 and 14, and use Math.floor() to ensure it's a whole number because indexes are whole numbers
+        const randomIndex = Math.floor((Math.random() * 30)) // get random index since solutions array has 31 words, index could be 0-30
+        // return word at index
+        return solutions[randomIndex]
       }
 
       // for creating 2nd evaluation key in previously guessed section
@@ -347,167 +346,178 @@
       
       // main onload function
       window.onload = () => {
-      	// listen for key press
-      	document.addEventListener('keydown', () => {
-      		const input = document.getElementById('answer-field')
-      		if(event.key === 'Enter') {
-      			document.getElementById('guess-btn').click()
-      			// regular expression to test whether a key letter has been pressed
-               // if key has been pressed, populate input field by focusing it
-      		} else if (/[a-zA-Z]/.test(event.key)) {
-      			input.focus()
-      		}
-      	})
+        // listen for key press
+        document.addEventListener('keydown', () => {
+          const input = document.getElementById('answer-field')
+          if(event.key === 'Enter') {
+            document.getElementById('guess-btn').click()
+            // regular expression to test whether a key letter has been pressed
+            // if key has been pressed, populate input field by focusing it
+          } else if (/[a-zA-Z]/.test(event.key)) {
+            input.focus()
+          }
+        })
       
       
-      	// get current solution
-      	let currentSolution = getSolution()
-      	let guesses = []
-         let previouslyGuessedUi = document.getElementById('guesses')
-         const debugBtn = document.getElementById('debug')
-      	const winStatus = document.getElementById('win-status')
-      	const guessNum = document.getElementById('guess-num')
-      	const solutionSpan = document.getElementById('solution-debug')
-      	const guessBtn = document.getElementById('guess-btn')
-      	const buttons = document.getElementsByClassName('letter')
+        // get current solution
+        let currentSolution = getSolution()
+        let guesses = []
+        let previouslyGuessedUi = document.getElementById('guesses')
+        const debugBtn = document.getElementById('debug')
+        const winStatus = document.getElementById('win-status')
+        const guessNum = document.getElementById('guess-num')
+        const solutionSpan = document.getElementById('solution-debug')
+        const guessBtn = document.getElementById('guess-btn')
+        const buttons = document.getElementsByClassName('letter')
 
          const resetGameUI = () => {
-               document.querySelectorAll('.letter').forEach(letter => {
-                  letter.classList.remove('correct')
-                  letter.classList.remove('misplaced')
-                  letter.classList.remove('wrong')
-              })
-            }
+             document.querySelectorAll('.letter').forEach(letter => {
+                letter.classList.remove('correct')
+                letter.classList.remove('misplaced')
+                letter.classList.remove('wrong')
+            })
+          }
       
-      	const restart = () => {
-            debugBtn.disabled = false
-            resetGameUI()
-      		// find new solution
-      		currentSolution = getSolution()
-      		// clear out guess array
-      		guesses = []
-      		// update text
-      		document.querySelectorAll('input')[0].value = ''
-      		winStatus.innerText = ''
-      		guessBtn.innerText = 'guess' // update button ui
-      		guessNum.innerText = 6
-      		solutionSpan.innerText = ''
-      		debugBtn.innerText = 'click to see answer' // update debug btn
-            previouslyGuessedUi.innerHTML = ''
-      	}
+        const restart = () => {
+          debugBtn.disabled = false
+          resetGameUI()
+          // find new solution
+          currentSolution = getSolution()
+          // clear out guess array
+          guesses = []
+          // update text
+          document.querySelectorAll('input')[0].value = ''
+          winStatus.innerText = ''
+          guessBtn.innerText = 'guess' // update button ui
+          guessNum.innerText = 6
+          solutionSpan.innerText = ''
+          debugBtn.innerText = 'click to see answer' // update debug btn
+          previouslyGuessedUi.innerHTML = ''
+        }
       
-      	const updateLetterUi = letterData => {
-            // for letter data obj, it has correct, misplaced and wrong keys if letters exist
-            // in those categories
-            // for each category, add class
-      		if(letterData.correct) {
-      			letterData.correct.forEach((el) => {
-      				document.getElementById(el.letter).classList.add('correct')
-      			})
-      		}
+        const updateLetterUi = letterData => {
+          // for letter data obj, it has correct, misplaced and wrong keys if letters exist
+          // in those categories
+          // for each category, add class
+          if(letterData.correct) {
+            letterData.correct.forEach((el) => {
+              document.getElementById(el.letter).classList.add('correct')
+            })
+          }
       
-      		if(letterData.misplaced) {
-      			letterData.misplaced.forEach((el) => {
-      				document.getElementById(el.letter).classList.add('misplaced')
-      			})
-      		}
+          if(letterData.misplaced) {
+            letterData.misplaced.forEach((el) => {
+              document.getElementById(el.letter).classList.add('misplaced')
+            })
+          }
       
-      		if(letterData.wrong) {
-      			letterData.wrong.forEach((el) => {
-      				document.getElementById(el.letter).classList.add('wrong')
-      			})
-      		}
-      	}
+          if(letterData.wrong) {
+            letterData.wrong.forEach((el) => {
+              document.getElementById(el.letter).classList.add('wrong')
+            })
+          }
+        }
       
          // for debug button, add click event listener
-      	debugBtn.addEventListener('click', () => {
-            // if they already guessed, this btn is disabled so cant use
-            // ensures user can only use at beginning of game
-            solutionSpan.innerText = currentSolution
-      	})
+        debugBtn.addEventListener('click', () => {
+          // if they already guessed, this btn is disabled so cant use
+          // ensures user can only use at beginning of game
+          solutionSpan.innerText = currentSolution
+        })
       
-         // for main logic, checks many things
-      	guessBtn.addEventListener('click', () => {
-            debugBtn.disabled = true
+        // logic for handling when a user clicks guess or presses enter
+        guessBtn.addEventListener('click', () => {
+          debugBtn.disabled = true
             // first get guess value fron input field
-      		const currentGuess = document.querySelectorAll('input')[0].value
+          const currentGuess = document.querySelectorAll('input')[0].value
             // if someone has already seen solution, text is 'play again', so they can restart
-      		if (guessBtn.innerText === 'play again?') {
-      			return restart()
-      		}
+          if (guessBtn.innerText === 'play again?') {
+            return restart()
+          }
 
-      		// if no more guesses
-      		if (guesses.length === 6) {
+          // if no more guesses
+          if (guesses.length === 6) {
                // update text to play again
-      			guessBtn.innerText = 'play again?'
+            guessBtn.innerText = 'play again?'
                // add solution to html
-      			winStatus.innerText = 'answer is: ' + currentSolution
+            winStatus.innerText = 'answer is: ' + currentSolution
                return // stop evaluating
-      		}
+          }
       
-      		// if guess length is less than
-      		if (currentGuess.length < 5) {
+          // if guess length is less than
+          if (currentGuess.length < 5) {
                // Dont continue to evaluate, user needs word at least 5 letters long
-      			return alert('too short')
-      		}
+            return alert('too short')
+          }
 
             // Checks if current guess is in guesses array, lets disallow people guessing the same word multiple times
-      		if (guesses.includes(currentGuess)) {
-				  return alert('already guessed')
-      		}
+          if (guesses.includes(currentGuess)) {
+          return alert('already guessed')
+          }
 
-            // If we made it here, now let's hit the API
-   			const DICTIONARY_CHECK_API = `https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`
-   			let xhr = new XMLHttpRequest()
-   			// https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest_API/Synchronous_and_Asynchronous_Requests
-   			// 3rd param true tells the request to be handled async
-   			xhr.open("GET", DICTIONARY_CHECK_API, true)
-   			xhr.onload = () => {
-               // ready state === 4 according to documenation of xmlhttprequest means the operation is done
-   				if(xhr.readyState === 4) {
-                  // if status is 200, means response is successful, the page exists
-   					if(xhr.status === 200) {
-                     // if it is a real word, add to guesses array
-   						guesses.push(currentGuess)
-                     // then evaluate it against the solution to indicate correct,misplaced and correct letters
-                     previouslyGuessedUi.innerHTML += guessCoded(currentGuess, currentSolution)
-                     // same evaluation, except this result will be used to update letters boxes in UI
-   						const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
+        // If we made it here, now let's hit the API
+        const DICTIONARY_CHECK_API = `https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`
+        let xhr = new XMLHttpRequest()
+        // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest_API/Synchronous_and_Asynchronous_Requests
+        // 3rd param true tells the request to be handled async
+        xhr.open("GET", DICTIONARY_CHECK_API, true)
+        xhr.onload = () => {
+          // ready state === 4 according to documenation of xmlhttprequest means the operation is done
+          if(xhr.readyState === 4) {
+            // if status is 200, means response is successful, the page exists
+            if(xhr.status === 200) {
+              // if it is a real word, add to guesses array
+              guesses.push(currentGuess)
+              // then evaluate it against the solution to indicate correct,misplaced and correct letters
+              previouslyGuessedUi.innerHTML += guessCoded(currentGuess, currentSolution)
+              // same evaluation, except this result will be used to update letters boxes in UI
+              const result = compareWordToSolution(currentGuess.toLowerCase(), currentSolution.toLowerCase())
+              
+              // if it isnt correct, and theyve already guessed 6 times
+              // update ui and stop evaluating
+              if(result.status !== 'correct' && guesses.length === 6) {
+                document.getElementById('guess-num').innerText = 0
+                winStatus.innerText = 'next time...' + ' ' + 'solution is ' + currentSolution
+                guessBtn.innerText = 'play again?'
+                return
+              }
+              
+              // if the answer isnt correct and still guesses left
+              // update letter ui to give feedback to player
+              if (result.status !== 'correct' && guesses.length < 6) {
+                document.getElementById('guess-num').innerText = 6 - guesses.length
+                updateLetterUi(result.data)
+              }
+              
+              // if status is correct, add animation, update ui
+              if (result.status === 'correct') {
+                document.getElementById('guess-num').innerText = 6 - guesses.length
+                winStatus.classList.add('animate')
+
+                // update key display ui
+                currentSolution.split('').forEach(letter => {
+                  document.getElementById(letter).classList.add('correct')
+                })
+
+                // tell player they won
+                winStatus.innerText = 'YOU GOT IT'
+                guessBtn.innerText = 'play again?'
+              }
+            } else {
+              // if it isnt a real word, doesnt hurt their guess count
+              alert('NOT REAL WORD, try again')
+            }
+            
    
-   						if(result.status !== 'correct' && guesses.length === 6) {
-   							document.getElementById('guess-num').innerText = 0
-   							winStatus.innerText = 'next time...' + ' ' + 'solution is ' + currentSolution
-   							guessBtn.innerText = 'play again?'
-   							return
-   						}
+          } else {
+            // problem with ui? tell them to try again
+            alert("problem with request, try again")
+          }
+        }
    
-   						if (result.status !== 'correct' && guesses.length < 6) {
-                        document.getElementById('guess-num').innerText = 6 - guesses.length
-   							updateLetterUi(result.data)
-   						}
-   
-   						if (result.status === 'correct') {
-                        document.getElementById('guess-num').innerText = 6 - guesses.length
-   							winStatus.classList.add('animate')
-   							currentSolution.split('').forEach(letter => {
-   								document.getElementById(letter).classList.add('correct')
-   							})
-   							winStatus.innerText = 'YOU GOT IT'
-   							guessBtn.innerText = 'play again?'
-   						}
-   					} else {
-   						alert('NOT REAL WORD, try again')
-   					}
-   					
-   
-   				} else {
-   					alert("problem with request, try again")
-   				}
-   			}
-   
-   			xhr.send(null)
-      	})
-      	
+        xhr.send(null)
+        })
+        
       }
    </script>
 </body>
